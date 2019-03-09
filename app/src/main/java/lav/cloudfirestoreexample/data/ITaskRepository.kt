@@ -1,14 +1,16 @@
 package lav.cloudfirestoreexample.data
 
+import io.reactivex.Single
+
 /**
  * Created by Anatoliy Lukyanov on 05/03/2019.
  *
  */
 interface ITaskRepository {
 
-    fun getAllTask(): List<Task>
+    fun getAllTask(): Single<List<Task>>
 
     fun addTask(task: Task)
-    fun deletetask(taskId: String)
+    fun deleteTask(taskId: String)
 
 }

@@ -1,32 +1,54 @@
 package lav.cloudfirestoreexample.data
 
+import com.google.firebase.firestore.DocumentSnapshot
+import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.FirebaseFirestoreSettings
+import io.reactivex.Observable
+import io.reactivex.Single
+import io.reactivex.schedulers.Schedulers
+import lav.cloudfirestoreexample.data.remote.RemoteTask
+import lav.cloudfirestoreexample.data.remote.mapToTask
+
 /**
  * Created by Anatoliy Lukyanov on 05/03/2019.
  *
  */
-class FirestoreTaskRepository: ITaskRepository {
+class FirestoreTaskRepository : ITaskRepository {
 
-    override fun getAllTask(): List<Task> {
-        return listOf(
-            Task("1", "Task1"),
-            Task("2", "Task2"),
-            Task("3", "Task3"),
-            Task("4", "Task4"),
-            Task("5", "Task5"),
-            Task("6", "Task6"),
-            Task("7", "Task7"),
-            Task("8", "Task8"),
-            Task("9", "Task9"),
-            Task("10", "Task10"),
-            Task("11", "Task11")
-        )
+    companion object {
+        private const val TASKS_COLLECTION = "Tasks"
+    }
+
+    private val remoteDB = FirebaseFirestore.getInstance().apply {
+        firestoreSettings = FirebaseFirestoreSettings.Builder()
+            .setPersistenceEnabled(false)
+            .build()
+    }
+
+    override fun getAllTask(): Single<List<Task>> {
+        return Single.create<List<DocumentSnapshot>> { emitter ->
+            remoteDB.collection(TASKS_COLLECTION)
+                .get()
+                .addOnSuccessListener {
+                    if (!emitter.isDisposed) {
+                        emitter.onSuccess(it.documents)
+                    }
+                }
+        }
+            .observeOn(Schedulers.io())
+            .flatMapObservable { Observable.fromIterable(it) }
+            .map { document ->
+                document.toObject(RemoteTask::class.java)!!.apply { id = document.id }
+            }
+            .map(::mapToTask)
+            .toList()
     }
 
     override fun addTask(task: Task) {
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 
-    override fun deletetask(taskId: String) {
+    override fun deleteTask(taskId: String) {
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 }

@@ -9,6 +9,8 @@ import kotlinx.android.extensions.LayoutContainer
 import kotlinx.android.synthetic.main.recycler_item.view.*
 import lav.cloudfirestoreexample.R
 import lav.cloudfirestoreexample.data.Task
+import java.text.SimpleDateFormat
+import java.util.Locale
 
 /**
  * Created by Anatoliy Lukyanov on 06/03/2019.
@@ -17,6 +19,7 @@ import lav.cloudfirestoreexample.data.Task
 class TaskAdapter(private val taskClickListener: OnTaskClickListener?) : RecyclerView.Adapter<TaskViewHolder>() {
 
     private val taskList = emptyList<Task>().toMutableList()
+    private val createdFormat = SimpleDateFormat("dd.MM.YYYY HH:mm", Locale.getDefault())
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TaskViewHolder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.recycler_item, parent, false)
@@ -31,6 +34,8 @@ class TaskAdapter(private val taskClickListener: OnTaskClickListener?) : Recycle
         val task = taskList[position]
         with(holder.containerView) {
             taskTitle.text = task.title
+            taskCreated.text = createdFormat.format(task.created)
+
             deleteTask.tag = taskList[position].id
         }
     }
