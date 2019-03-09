@@ -5,30 +5,35 @@
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:paddingTop="8dp"
-    android:paddingBottom="8dp">
+    android:paddingStart="16dp"
+    android:paddingEnd="16dp">
 
     <com.google.android.material.button.MaterialButton
-        android:id="@+id/delete"
-        android:layout_width="wrap_content"
+        android:id="@+id/deleteTask"
+        android:layout_width="50dp"
         android:layout_height="wrap_content"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         style="@style/Widget.MaterialComponents.Button.Icon"
         app:icon="@drawable/ic_delete"
-        app:iconPadding="8dp"
+        app:iconGravity="textStart"
+        app:iconPadding="0dp"
         />
 
+
+
     <TextView
-        android:id="@+id/taskName"
+        android:id="@+id/taskTitle"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        app:layout_constraintEnd_toStartOf="@id/delete"
+        app:layout_constraintEnd_toStartOf="@id/deleteTask"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
         android:layout_marginEnd="8dp"
+        android:textSize="16dp"
+        android:fontFamily="sans-serif-black"
         tools:text="Long task name"
         />
 

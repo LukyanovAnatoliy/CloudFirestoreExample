@@ -4,27 +4,27 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MainActivity">
+    tools:context=".ui.MainActivity">
 
     <com.google.android.material.textfield.TextInputEditText
-        android:id="@+id/taskName"
+        android:id="@+id/taskTitle"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/add"
+        app:layout_constraintEnd_toStartOf="@+id/addTask"
         android:layout_marginStart="16dp"
         android:layout_marginEnd="8dp"
         android:hint="@string/task_name_hint"
         />
 
     <com.google.android.material.button.MaterialButton
-        android:id="@+id/add"
+        android:id="@+id/addTask"
         android:layout_width="wrap_content"
         android:layout_height="0dp"
-        app:layout_constraintBottom_toBottomOf="@id/taskName"
+        app:layout_constraintBottom_toBottomOf="@id/taskTitle"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="@id/taskName"
+        app:layout_constraintTop_toTopOf="@id/taskTitle"
         android:layout_marginEnd="16dp"
         android:text="@string/add_button_title"
         />
@@ -36,9 +36,7 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintBottom_toTopOf="@id/taskName"
-        android:paddingStart="16dp"
-        android:paddingEnd="16dp"
+        app:layout_constraintBottom_toTopOf="@id/taskTitle"
         tools:listitem="@layout/recycler_item"
         />
 
