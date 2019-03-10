@@ -1,5 +1,6 @@
 package lav.cloudfirestoreexample.data
 
+import io.reactivex.Completable
 import io.reactivex.Single
 
 /**
@@ -10,7 +11,7 @@ interface ITaskRepository {
 
     fun getAllTask(): Single<List<Task>>
 
-    fun addTask(task: Task)
-    fun deleteTask(taskId: String)
+    fun addTask(task: Task): Completable
+    fun deleteTask(taskId: String): Completable
 
 }

@@ -15,35 +15,52 @@ import lav.cloudfirestoreexample.data.Task
  * Created by Anatoliy Lukyanov on 05/03/2019.
  *
  */
-class MainViewModel: ViewModel() {
+class MainViewModel : ViewModel() {
 
     private val _taskList = MutableLiveData<List<Task>>()
     val taskList: LiveData<List<Task>>
         get() = _taskList
 
+    private val repository: ITaskRepository = FirestoreTaskRepository()
+
     private val disposable = CompositeDisposable()
 
     init {
-        val repository: ITaskRepository = FirestoreTaskRepository()
-
         repository.getAllTask()
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
-            .subscribe { list ->  _taskList.value = list }
+            .subscribe { list -> _taskList.value = list }
             .addTo(disposable)
     }
 
     fun deleteTask(taskId: String) {
-        val newList: MutableList<Task> = _taskList.value!!.toMutableList()
-        newList.removeAll { it.id == taskId }
-        _taskList.value = newList
+        repository.deleteTask(taskId)
+            .andThen(repository.getAllTask())
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe(
+                {
+                    _taskList.value = it
+                },
+                {
+                    it.printStackTrace()
+                })
+            .addTo(disposable)
     }
 
     fun addTask(taskTitle: String) {
-        val newTask = Task("${System.currentTimeMillis()}", taskTitle)
-        val newList: MutableList<Task> = _taskList.value!!.toMutableList()
-        newList.add(newTask)
-        _taskList.value = newList
+        repository.addTask(Task("${System.currentTimeMillis()}", taskTitle))
+            .andThen(repository.getAllTask())
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe(
+                {
+                    _taskList.value = it
+                },
+                {
+                    it.printStackTrace()
+                })
+            .addTo(disposable)
     }
 
     override fun onCleared() {
