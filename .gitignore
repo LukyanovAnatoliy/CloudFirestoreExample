@@ -3,3 +3,7 @@
 /local.properties
 /.idea
 /app/google-services.json
+/export/firestore_key.json
+/export/package-lock.json
+/export/node_modules/
+/export/instruction.txt
