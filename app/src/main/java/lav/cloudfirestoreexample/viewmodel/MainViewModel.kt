@@ -26,22 +26,24 @@ class MainViewModel : ViewModel() {
     private val disposable = CompositeDisposable()
 
     init {
-        repository.getAllTask()
-            .subscribeOn(Schedulers.io())
+        repository.getChangeObservable()
             .observeOn(AndroidSchedulers.mainThread())
-            .subscribe { list -> _taskList.value = list }
+            .subscribe (
+                {
+                    _taskList.value = it
+                },
+                {
+                    it.printStackTrace()
+                }
+            )
             .addTo(disposable)
     }
 
     fun deleteTask(taskId: String) {
         repository.deleteTask(taskId)
-            .andThen(repository.getAllTask())
             .subscribeOn(Schedulers.io())
-            .observeOn(AndroidSchedulers.mainThread())
             .subscribe(
-                {
-                    _taskList.value = it
-                },
+                {},
                 {
                     it.printStackTrace()
                 })
@@ -50,13 +52,9 @@ class MainViewModel : ViewModel() {
 
     fun addTask(taskTitle: String) {
         repository.addTask(Task("${System.currentTimeMillis()}", taskTitle))
-            .andThen(repository.getAllTask())
             .subscribeOn(Schedulers.io())
-            .observeOn(AndroidSchedulers.mainThread())
             .subscribe(
-                {
-                    _taskList.value = it
-                },
+                {},
                 {
                     it.printStackTrace()
                 })
