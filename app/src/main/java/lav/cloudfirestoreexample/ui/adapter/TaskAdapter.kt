@@ -19,7 +19,7 @@ import java.util.Locale
 class TaskAdapter(private val taskClickListener: OnTaskClickListener?) : RecyclerView.Adapter<TaskViewHolder>() {
 
     private val taskList = emptyList<Task>().toMutableList()
-    private val createdFormat = SimpleDateFormat("dd.MM.YYYY HH:mm", Locale.getDefault())
+    private val createdFormat = SimpleDateFormat("dd.MM.yyyy HH:mm", Locale.getDefault())
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TaskViewHolder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.recycler_item, parent, false)
