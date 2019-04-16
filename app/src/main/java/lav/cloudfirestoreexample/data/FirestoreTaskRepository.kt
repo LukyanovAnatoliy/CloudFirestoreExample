@@ -97,6 +97,25 @@ class FirestoreTaskRepository : ITaskRepository {
         }
     }
 
+    // second option to add data
+//    override fun addTask(task: Task): Completable {
+//        return Completable.create { emitter ->
+//
+//            remoteDB.collection(TASKS_COLLECTION)
+//                .add(mapToRemoteTask(task))
+//                .addOnSuccessListener {
+//                    if (!emitter.isDisposed) {
+//                        emitter.onComplete()
+//                    }
+//                }
+//                .addOnFailureListener {
+//                    if (!emitter.isDisposed) {
+//                        emitter.onError(it)
+//                    }
+//                }
+//        }
+//    }
+
     override fun deleteTask(taskId: String): Completable {
         return Completable.create { emitter ->
             remoteDB.collection(TASKS_COLLECTION)
